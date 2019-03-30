@@ -38,39 +38,46 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/problem',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/problem/index',
+    name: 'Problem',
+    meta: { title: '题目管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'index',
+        name: 'AllProblem',
+        component: () => import('@/views/problem/index'),
+        meta: { title: '所有题目', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'create',
+        name: 'CreateProblem',
+        component: () => import('@/views/problem/create'),
+        meta: { title: '添加题目', icon: 'table' }
+      },
+      {
+        path: 'update/:id',
+        name: 'UpdateProblem',
+        hidden: true,
+        component: () => import('@/views/problem/update'),
+        meta: { title: '跟新题目', icon: 'table' }
       }
     ]
   },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
