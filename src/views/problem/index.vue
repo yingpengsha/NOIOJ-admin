@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column label="标题">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row.pkId)">{{ scope.row.title }}</span>
+          <span class="link-type" @click="handleUpdate(scope.row.problemId)">{{ scope.row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column label="发布时间" width="120" align="center">
@@ -55,8 +55,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.pkId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.problemId)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row.problemId)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -156,7 +156,6 @@ export default {
       this.loading = true
       problem.query(this.listQuery)
         .then((result) => {
-          console.log(result)
           if (result.code) {
             this.total = result.data.totalCount
             this.list = result.data.list

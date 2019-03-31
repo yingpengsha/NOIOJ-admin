@@ -4,11 +4,9 @@ export function query({ limit, page, title, tags, difficulty, type, isFree }) {
   return request({
     url: '/problem/list',
     method: 'post',
-    params: {
-      limit,
-      page
-    },
     data: {
+      limit,
+      page,
       title,
       tags,
       difficulty,
@@ -45,9 +43,10 @@ export function update(data) {
 }
 
 export function deleteById(id) {
+  console.log(id)
   return request({
     url: '/problem',
-    method: 'put',
+    method: 'delete',
     params: {
       id
     }
