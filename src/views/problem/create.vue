@@ -148,11 +148,13 @@ export default {
         if (valid) {
           problem.upload(this.form)
             .then((result) => {
-              this.$message({
-                type: 'success',
-                message: '添加成功!'
-              })
-              this.$router.push({ name: 'Problem' })
+              if (result.code === 1) {
+                this.$message({
+                  type: 'success',
+                  message: '添加成功!'
+                })
+                this.$router.push({ name: 'Problem' })
+              }
             })
         } else {
           console.log('error submit!!')

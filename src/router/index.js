@@ -42,26 +42,26 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/problem/index',
     name: 'Problem',
-    meta: { title: '题目管理', icon: 'example' },
+    meta: { title: '题目管理', icon: 'problem' },
     children: [
       {
         path: 'index',
         name: 'AllProblem',
         component: () => import('@/views/problem/index'),
-        meta: { title: '所有题目', icon: 'table' }
+        meta: { title: '所有题目', icon: 'problem' }
       },
       {
         path: 'create',
         name: 'CreateProblem',
         component: () => import('@/views/problem/create'),
-        meta: { title: '添加题目', icon: 'table' }
+        meta: { title: '添加题目', icon: 'edit' }
       },
       {
         path: 'update/:id',
         name: 'UpdateProblem',
         hidden: true,
         component: () => import('@/views/problem/update'),
-        meta: { title: '跟新题目', icon: 'table' }
+        meta: { title: '更新题目', icon: 'edit' }
       }
     ]
   },
