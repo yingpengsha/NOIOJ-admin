@@ -1,6 +1,9 @@
 <template>
   <div class="app-container" v-loading="loading">
     <el-form ref="form" :rules="rules" :model="form" label-width="150px">
+      <el-form-item label="所属题包名" v-show="this.form.packetId !== 0">
+        <el-input v-model="$route.query.name" class="input" :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="题目名称" prop="title">
         <el-input v-model="form.title" class="input"></el-input>
       </el-form-item>
@@ -186,6 +189,9 @@ export default {
   },
   created() {
     this.getTags()
+    if (this.$route.name === 'CreatePackageProblem') {
+      this.form.packetId = this.$route.query.id
+    }
   }
 }
 </script>

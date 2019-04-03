@@ -38,6 +38,56 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/package',
+    component: Layout,
+    redirect: '/package/index',
+    name: 'Package',
+    meta: { title: '题包管理', icon: 'table' },
+    children: [
+      {
+        path: 'detail/:id',
+        name: 'PackageDetail',
+        hidden: true,
+        component: () => import('@/views/package/detail'),
+        meta: { title: '题包详情', icon: 'table' }
+      },
+      {
+        path: 'detail/create',
+        name: 'CreatePackageProblem',
+        hidden: true,
+        component: () => import('@/views/problem/create'),
+        meta: { title: '添加题目', icon: 'edit' }
+      },
+      {
+        path: 'detail/update/:id',
+        name: 'UpdatePackageProblem',
+        hidden: true,
+        component: () => import('@/views/problem/update'),
+        meta: { title: '更新题目', icon: 'edit' }
+      },
+      {
+        path: 'index',
+        name: 'AllPackage',
+        component: () => import('@/views/package/index'),
+        meta: { title: '所有题包', icon: 'table' }
+      },
+      {
+        path: 'create',
+        name: 'CreatePackage',
+        component: () => import('@/views/package/create'),
+        meta: { title: '添加题包', icon: 'edit' }
+      },
+      {
+        path: 'update/:id',
+        name: 'UpdatePackage',
+        hidden: true,
+        component: () => import('@/views/package/update'),
+        meta: { title: '更新题包', icon: 'edit' }
+      }
+    ]
+  },
+
+  {
     path: '/problem',
     component: Layout,
     redirect: '/problem/index',
@@ -65,19 +115,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

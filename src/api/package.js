@@ -1,25 +1,23 @@
 import request from '@/utils/request'
 
-export function query({ limit, page, title, tags, difficulty, type, isFree, packetId }) {
+export function query({ limit, page, title, originClass, userId, state }) {
   return request({
-    url: '/problem/list',
+    url: '/packet/list',
     method: 'post',
     data: {
       limit,
       page,
       title,
-      tags,
-      difficulty,
-      type,
-      isFree,
-      packetId
+      originClass,
+      userId,
+      state
     }
   })
 }
 
 export function queryById(id) {
   return request({
-    url: '/problem/detail',
+    url: '/packet/detail',
     method: 'get',
     params: {
       id
@@ -27,9 +25,9 @@ export function queryById(id) {
   })
 }
 
-export function upload(data) {
+export function insert(data) {
   return request({
-    url: '/problem',
+    url: '/packet',
     method: 'post',
     data
   })
@@ -37,16 +35,15 @@ export function upload(data) {
 
 export function update(data) {
   return request({
-    url: '/problem',
+    url: '/packet',
     method: 'put',
     data
   })
 }
 
 export function deleteById(id) {
-  console.log(id)
   return request({
-    url: '/problem',
+    url: '/packet',
     method: 'delete',
     params: {
       id

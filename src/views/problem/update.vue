@@ -1,6 +1,9 @@
 <template>
   <div class="app-container" :v-loading="loading || tagLoading">
     <el-form ref="form" :rules="rules" :model="form" label-width="150px">
+      <el-form-item label="所属题包名" v-show="$route.name === 'UpdatePackageProblem'">
+        <el-input v-model="$route.query.name" class="input" :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="题目名称" prop="title">
         <el-input v-model="form.title" class="input"></el-input>
       </el-form-item>
@@ -167,6 +170,7 @@ export default {
     getData() {
       problem.queryById(this.$route.params.id)
         .then((result) => {
+          console.log(result)
           this.form = result.data
           this.selectData(this.form.tags)
           this.loading = false

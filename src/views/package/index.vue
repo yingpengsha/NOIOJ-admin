@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <div class="filter-container" style="margin-bottom:20px">
-      <el-input v-model="listQuery.title" placeholder="题目" style="width: 200px;" class="filter-item" clearable @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.isFree" placeholder="免费/付费" clearable class="filter-item" style="width: 120px">
-        <el-option v-for="(item,key) in freeClasses" :key="key" :label="item.display_name" :value="item.value"/>
+      <el-input v-model="listQuery.title" placeholder="题包名" style="width: 200px;" class="filter-item" clearable @keyup.enter.native="handleFilter"/>
+      <el-select v-model="listQuery.originClass" placeholder="来源" clearable class="filter-item" style="width: 180px" @change="handleFilter">
+        <el-option v-for="(item,key) in originClass" :key="key" :label="item.name" :value="item.value"/>
       </el-select>
-      <el-select v-model="listQuery.difficulty" placeholder="难度" clearable class="filter-item" style="width: 100px">
-        <el-option v-for="(item,key) in difficultyClasses" :key="key" :label="item.display_name" :value="item.value"/>
+      <el-select v-model="listQuery.status" placeholder="状态" clearable class="filter-item" style="width: 120px" @change="handleFilter">
+        <el-option v-for="(item,key) in statusClass" :key="key" :label="item.name" :value="item.value"/>
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 1px;" type="success" icon="el-icon-edit" @click="handleCreate">增加</el-button>
@@ -21,42 +21,47 @@
       highlight-current-row>
       <el-table-column align="center" label="编号" width="95">
         <template slot-scope="scope">
-          {{ scope.row.problemId }}
+          {{ scope.row.packetId }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="难度" width="110" align="center">
+      <el-table-column label="来源" width="120" align="center">
         <template slot-scope="scope">
-          <p class="difficulty" :style="difficultyClasses[scope.row.difficulty].display_name | tagStyle">
-            {{ difficultyClasses[scope.row.difficulty].display_name }}
-          </p>
+          <el-tag :type="originClass[scope.row.originClass].type">
+            {{ originClass[scope.row.originClass].name }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="标题">
+      <el-table-column label="题包名">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row.problemId)">{{ scope.row.title }}</span>
+          <span class="link-type" @click="handleDetail(scope.row.packetId)">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="发布时间" width="120" align="center">
+      <el-table-column label="题目数量" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.inDate | formatDate }}</span>
+          <span>{{ scope.row.count || '免费' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="所属题包" width="180" align="center">
+      <el-table-column label="价格" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.price}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="免费/收费" width="110" align="center">
+      <el-table-column label="作者" width="120" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isFree ? undefined : 'success'">
-            {{ freeClasses[scope.row.isFree].display_name }}
+          <span>{{ scope.row.author }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" width="120" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status ? statusClass[scope.row.status].type : null">
+            {{ scope.row.status ? statusClass[scope.row.status].name : '/' }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.problemId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.problemId)">删除
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.packetId)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row.packetId)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -79,10 +84,10 @@
 </template>
 
 <script>
-import * as problem from '@/api/problem'
+import * as packageAPI from '@/api/package'
 
 export default {
-  name: 'Problem',
+  name: 'Package',
   data() {
     return {
       list: [],
@@ -92,36 +97,33 @@ export default {
         limit: 20,
         page: 1,
         title: null,
-        tags: null,
-        difficulty: null,
-        type: null,
-        isFree: null,
-        packetId: null
+        originClass: null,
+        userId: null,
+        state: null
       },
-      difficultyClasses: [
-        { value: 0, display_name: '入门' },
-        { value: 1, display_name: '简单' },
-        { value: 2, display_name: '中等' },
-        { value: 3, display_name: '困难' },
-        { value: 4, display_name: '超难' }
+      originClass: [
+        { name: '信奥训练平台', value: 0, type: undefined },
+        { name: '学校/组织', value: 1, type: 'success' },
+        { name: '个人', value: 2, type: 'info' }
       ],
-      freeClasses: [
-        { value: 0, display_name: '收费' },
-        { value: 1, display_name: '免费' }
+      statusClass: [
+        { name: '编辑中', value: -1, type: 'info' },
+        { name: '待审核', value: 0, type: 'warning' },
+        { name: '已发布', value: 1, type: 'danger' }
       ]
     }
   },
   methods: {
-    handleUpdate(id) {
-      this.$router.push({ path: `/problem/update/${id}` })
+    handleDetail(id) {
+      this.$router.push({ path: `/package/detail/${id}` })
     },
     handleDelete(id) {
-      this.$confirm('此操作将永久删除该题目, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该题包, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        problem.deleteById(id)
+        packageAPI.deleteById(id)
           .then((result) => {
             this.$message({
               type: 'success',
@@ -137,7 +139,7 @@ export default {
       })
     },
     handleCreate() {
-      this.$router.push({ name: 'CreateProblem' })
+      this.$router.push({ name: 'CreatePackage' })
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -155,8 +157,9 @@ export default {
       this.list = []
       this.total = 0
       this.loading = true
-      problem.query(this.listQuery)
+      packageAPI.query(this.listQuery)
         .then((result) => {
+          console.log(result)
           if (result.code) {
             this.total = result.data.totalCount
             this.list = result.data.list
@@ -175,42 +178,7 @@ export default {
       const month = date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
       const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate() + 1}`
       return `${year}-${month}-${day}`
-    },
-    tagStyle(difficulty) {
-      let style = 'background:'
-      switch (difficulty) {
-        case '入门':
-          style += '#909399'
-          break
-        case '简单':
-          style += '#67C23A'
-          break
-        case '中等':
-          style += '#0681FF'
-          break
-        case '困难':
-          style += '#E6A23C'
-          break
-        case '超难':
-          style += '#F56C6C'
-          break
-        default:
-          break
-      }
-      return style
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.difficulty{
-  width: 80px;
-  height:28px;
-  line-height: 28px;
-  margin:0 auto;
-  background: black;
-  color: white;
-  border-radius: 3px;
-}
-</style>

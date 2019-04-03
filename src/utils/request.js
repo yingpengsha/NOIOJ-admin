@@ -3,9 +3,11 @@ import { Message } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
+export const API_ROOT = 'http://192.168.10.112:9999'
+
 // 创建axios实例
 const service = axios.create({
-  baseURL: 'http://192.168.10.112:9999', // api的base_url
+  baseURL: API_ROOT, // api的base_url
   timeout: 5000 // 请求超时时间
 })
 
