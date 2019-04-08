@@ -53,14 +53,18 @@
       </el-table-column>
       <el-table-column label="状态" width="120" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status ? statusClass[scope.row.status].type : null">
-            {{ scope.row.status ? statusClass[scope.row.status].name : '/' }}
+          <el-tag :type="statusClass[scope.row.status+1].type">
+            {{ statusClass[scope.row.status+1].name }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDetail(scope.row.packetId)">编辑</el-button>
+          <el-button :disabled="scope.row.status === -1" :type="buttonClass[scope.row.status+1].type" size="mini"
+            @click="handleToChangeStatus(scope.row.packetId,buttonClass[scope.row.status+1].value)">
+            {{buttonClass[scope.row.status+1].name}}
+          </el-button>
+          <el-button type="info" size="mini" @click="handleDetail(scope.row.packetId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.packetId)">删除
           </el-button>
         </template>
@@ -110,10 +114,21 @@ export default {
         { name: '编辑中', value: -1, type: 'info' },
         { name: '待审核', value: 0, type: 'warning' },
         { name: '已发布', value: 1, type: 'danger' }
+      ],
+      buttonClass: [
+        { name: '编辑中', value: -1, type: null },
+        { name: '允许发布', value: 1, type: 'primary' },
+        { name: '取消发布', value: -1, type: 'warning' }
       ]
     }
   },
   methods: {
+    handleToChangeStatus(packetId, status) {
+      packageAPI.update({ packetId, status })
+        .then((result) => {
+          this.getList()
+        })
+    },
     handleDetail(id) {
       this.$router.push({ path: `/package/detail/${id}` })
     },

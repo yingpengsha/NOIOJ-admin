@@ -3,6 +3,14 @@
     <el-card body-style="width:100%;display:flex;" style="margin-bottom:20px;" v-loading="packageLoading">
       <div slot="header" class="clearfix">
         <span>题包概要</span>
+        <el-tag style="margin-left:10px" :type="statusClass[packageInfo.status+1].type">
+          {{ statusClass[packageInfo.status+1].name }}
+        </el-tag>
+        <el-button style="margin-left:10px" size="small" :type="buttonClass[packageInfo.status+1].type"
+          @click="handleToChangeStatus(buttonClass[packageInfo.status+1].value)"
+        >
+          {{ packageInfo.status ? buttonClass[packageInfo.status+1].name : '/' }}
+        </el-button>
         <el-button style="float: right; padding: 3px 0" type="text" @click="handleToUpdatePackage">编辑概要</el-button>
       </div>
       <img :src="packageInfo.image" height="250px"/>
@@ -51,7 +59,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleUpdate(scope.row.problemId)">编辑</el-button>
+            <el-button type="info" size="mini" @click="handleUpdate(scope.row.problemId)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.row.problemId)">删除
             </el-button>
           </template>
@@ -104,10 +112,26 @@ export default {
         { value: 2, display_name: '中等' },
         { value: 3, display_name: '困难' },
         { value: 4, display_name: '超难' }
+      ],
+      statusClass: [
+        { name: '编辑中', value: -1, type: 'info' },
+        { name: '待审核', value: 0, type: 'warning' },
+        { name: '已发布', value: 1, type: 'danger' }
+      ],
+      buttonClass: [
+        { name: '发布', value: 0, type: 'primary' },
+        { name: '取消发布', value: -1, type: 'danger' },
+        { name: '取消发布', value: -1, type: 'danger' }
       ]
     }
   },
   methods: {
+    handleToChangeStatus(status) {
+      packageAPI.update({ packetId: this.packageInfo.packetId, status })
+        .then((result) => {
+          this.getPackageData()
+        })
+    },
     handleUpdate(id) {
       this.$router.push({ name: 'UpdatePackageProblem', params: { id }, query: { id: this.$route.params.id, name: this.packageInfo.name }})
     },
