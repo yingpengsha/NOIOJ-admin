@@ -103,7 +103,7 @@ export default {
         title: null,
         originClass: null,
         userId: null,
-        state: null
+        status: null
       },
       originClass: [
         { name: '信奥训练平台', value: 0, type: undefined },

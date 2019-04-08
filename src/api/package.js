@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function query({ limit, page, title, originClass, userId, state }) {
+export function query({ limit, page, title, originClass, userId, status }) {
   return request({
     url: '/packet/list',
     method: 'post',
@@ -10,7 +10,7 @@ export function query({ limit, page, title, originClass, userId, state }) {
       title,
       originClass,
       userId,
-      state
+      status
     }
   })
 }
