@@ -23,6 +23,7 @@
           v-model="selectTags[index]"
           :key="index"
           filterable
+          clearable
           :placeholder="tagName[index]"
           style="margin-right:10px;margin-bottom:10px"
         >
@@ -145,6 +146,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.setTags()
       this.form.tags = this.form.tags.join()
       this.form.inDate = utils.parseTime(this.form.inDate)
       this.$refs['form'].validate((valid) => {
