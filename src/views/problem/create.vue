@@ -105,7 +105,7 @@ export default {
       loading: true,
       tags: new Array(8),
       selectTags: new Array(8),
-      tagName: ['搜索/递归/回溯', '排序', '数学', '动态规划', '其他', '树结构', '线性结构', '其他'],
+      tagName: ['搜索/递归/回溯', '排序', '动态规划', '数学', '其他', '树结构', '线性结构', '其他'],
       rules: {
         title: [
           { required: true, message: '请输入题目名称' }
