@@ -18,7 +18,7 @@
         <h1>{{packageInfo.name}}</h1>
         <h2>价格: {{packageInfo.price}} 元</h2>
         <p>作者: {{packageInfo.author}}</p>
-        <p>{{packageInfo.introduce}}</p>
+        <p v-html="packageInfo.introduce"></p>
       </div>
     </el-card>
 

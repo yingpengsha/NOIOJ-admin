@@ -31,7 +31,7 @@
         <el-input-number v-model="form.price" :precision="2" :step="10" :min="0" :max="300"></el-input-number>
       </el-form-item>
       <el-form-item label="题包介绍" class="input" style="width:700px">
-        <el-input type="textarea" :rows="7" v-model="form.introduce"></el-input>
+        <Tinymce ref="editor" v-model="form.introduce" height="500px" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -43,6 +43,7 @@
 <script>
 import { API_ROOT } from '@/utils/request'
 import * as packageAPI from '@/api/package'
+import Tinymce from '@/components/Tinymce'
 
 export default {
   name: 'UpdatePackage',
@@ -68,6 +69,9 @@ export default {
       dialogVisible: false,
       API_ROOT
     }
+  },
+  components: {
+    Tinymce
   },
   methods: {
     handleExceed() {

@@ -49,14 +49,14 @@
       <el-form-item label="空间限制(MByte)" prop="memoryLimit">
         <el-input-number size="small" :min="0" v-model="form.memoryLimit"></el-input-number>
       </el-form-item>
-      <el-form-item label="题目介绍" prop="description">
-        <el-input type="textarea" :rows="4" class="input" v-model="form.description"></el-input>
+      <el-form-item label="题目介绍" prop="description" style="width:900px">
+        <Tinymce ref="editor" v-model="form.description" height="200px" />
       </el-form-item>
-      <el-form-item label="输入说明" prop="input">
-        <el-input type="textarea" :rows="3" class="input" v-model="form.input"></el-input>
+      <el-form-item label="输入说明" prop="input" style="width:900px">
+        <Tinymce ref="editor" v-model="form.input" height="200px" />
       </el-form-item>
-      <el-form-item label="输出说明" prop="output">
-        <el-input type="textarea" :rows="3" class="input" v-model="form.output"></el-input>
+      <el-form-item label="输出说明" prop="output" style="width:900px">
+        <Tinymce ref="editor" v-model="form.output" height="200px" />
       </el-form-item>
       <el-form-item label="输入参照" prop="sampleInput">
         <el-input type="textarea" :rows="2" class="input" v-model="form.sampleInput"></el-input>
@@ -75,6 +75,7 @@
 import * as tag from '@/api/tag'
 import * as problem from '@/api/problem'
 import * as utils from '@/utils/index'
+import Tinymce from '@/components/Tinymce'
 
 export default {
   name: 'CreateProblem',
@@ -194,6 +195,9 @@ export default {
     if (this.$route.name === 'CreatePackageProblem') {
       this.form.packetId = this.$route.query.id
     }
+  },
+  components: {
+    Tinymce
   }
 }
 </script>
