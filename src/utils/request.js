@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
-export const API_ROOT = 'http://192.168.10.112:9999'
+export const API_ROOT = 'http://192.168.10.103:8080'
 
 // 创建axios实例
 const service = axios.create({

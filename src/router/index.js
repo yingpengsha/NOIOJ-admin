@@ -116,6 +116,35 @@ export const constantRouterMap = [
     ]
   },
 
+  {
+    path: '/lesson',
+    component: Layout,
+    redirect: '/lesson/index',
+    name: 'Lesson',
+    meta: { title: '课程管理', icon: 'lesson' },
+    children: [
+      {
+        path: 'index',
+        name: 'AllLessonm',
+        component: () => import('@/views/lesson/index'),
+        meta: { title: '所有课程', icon: 'lesson' }
+      },
+      {
+        path: 'create',
+        name: 'CreateLesson',
+        component: () => import('@/views/lesson/createLesson'),
+        meta: { title: '添加课程', icon: 'edit' }
+      },
+      {
+        path: 'update/:id',
+        name: 'UpdateLesson',
+        hidden: true,
+        component: () => import('@/views/lesson/updateLesson'),
+        meta: { title: '更新课程', icon: 'edit' }
+      }
+    ]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
