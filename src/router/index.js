@@ -125,7 +125,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'index',
-        name: 'AllLessonm',
+        name: 'AllLesson',
         component: () => import('@/views/lesson/index'),
         meta: { title: '所有课程', icon: 'lesson' }
       },
@@ -141,6 +141,12 @@ export const constantRouterMap = [
         hidden: true,
         component: () => import('@/views/lesson/updateLesson'),
         meta: { title: '更新课程', icon: 'edit' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'LessonDetail',
+        component: () => import('@/views/lesson/detail'),
+        meta: { title: '课程详情', icon: 'edit' }
       }
     ]
   },

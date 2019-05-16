@@ -34,7 +34,7 @@ export function detailById(id) {
   })
 }
 
-export function create({ classId, title, difficulty, time, description, instructions }) {
+export function create({ classId, title, difficulty, time, description, instructions, image }) {
   return request({
     url: '/course',
     method: 'post',
@@ -44,12 +44,13 @@ export function create({ classId, title, difficulty, time, description, instruct
       difficulty,
       time,
       description,
-      instructions
+      instructions,
+      image
     }
   })
 }
 
-export function update({ courseId, classId, title, difficulty, time, description, instructions }) {
+export function update({ courseId, classId, title, difficulty, time, description, instructions, image }) {
   return request({
     url: '/course',
     method: 'put',
@@ -60,7 +61,8 @@ export function update({ courseId, classId, title, difficulty, time, description
       difficulty,
       time,
       description,
-      instructions
+      instructions,
+      image
     }
   })
 }

@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-export function query(id) {
+export function query(courseId) {
   return request({
     url: '/course/list',
     method: 'post',
-    params: {
-      id
+    data: {
+      courseId
     }
   })
 }

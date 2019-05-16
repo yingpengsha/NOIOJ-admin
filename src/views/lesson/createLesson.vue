@@ -1,6 +1,17 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="form" label-width="100px">
+      <el-form-item label="课程封面" prop="image">
+        <el-upload
+          class="avatar-uploader"
+          :action="`${API_ROOT}/course/temp`"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="form.image" :src="form.image" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="课程名称" prop="title" style="width:400px;">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
@@ -33,18 +44,21 @@
 <script>
 import * as lesson from '@/api/lesson'
 import Tinymce from '@/components/Tinymce'
+import { API_ROOT } from '@/utils/request'
 
 export default {
   name: 'CreateLesson',
   data() {
     return {
+      API_ROOT,
       form: {
         title: null,
         classId: null,
         difficulty: null,
         time: null,
         description: null,
-        instructions: null
+        instructions: null,
+        image: null
       },
       classes: [
         { name: '数学', value: 0 },
@@ -58,6 +72,9 @@ export default {
         { name: '高级', value: 3 }
       ],
       rules: {
+        image: [
+          { required: true, message: '请选择课程封面', trigger: 'blur' }
+        ],
         title: [
           { required: true, message: '请输入课程名称', trigger: 'blur' }
         ],
@@ -94,6 +111,21 @@ export default {
           console.log('error submit!!')
         }
       })
+    },
+    beforeAvatarUpload(file) {
+      const isJPGPNG = (file.type === 'image/jpeg' || file.type === 'image/png')
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPGPNG) {
+        this.$message.error('上传封面图片只能是 JPG / PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传封面图片大小不能超过 2MB!')
+      }
+      return isJPGPNG && isLt2M
+    },
+    handleAvatarSuccess(res, file) {
+      this.form.image = res.data
     }
   },
   components: {
@@ -102,3 +134,28 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>

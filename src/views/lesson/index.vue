@@ -112,6 +112,9 @@ export default {
     }
   },
   methods: {
+    handleDetail(id) {
+      this.$router.push({ name: 'LessonDetail', params: { id }})
+    },
     handleUpdate(id) {
       this.$router.push({ name: 'UpdateLesson', params: { id }})
     },
