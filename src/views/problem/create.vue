@@ -152,6 +152,9 @@ export default {
       this.form.inDate = utils.parseTime(this.form.inDate)
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          if (this.$route.name === 'CreatePackageProblem') {
+            this.form.packetId = this.$route.query.id
+          }
           problem.upload(this.form)
             .then((result) => {
               if (result.code === 1) {
@@ -159,7 +162,11 @@ export default {
                   type: 'success',
                   message: '添加成功!'
                 })
-                this.$router.push({ name: 'Problem' })
+                if (this.$route.name === 'CreatePackageProblem') {
+                  this.$router.push({ path: `/package/detail/${this.$route.query.id}` })
+                } else {
+                  this.$router.push({ name: 'Problem' })
+                }
               }
             })
         } else {
@@ -192,9 +199,6 @@ export default {
   },
   created() {
     this.getTags()
-    if (this.$route.name === 'CreatePackageProblem') {
-      this.form.packetId = this.$route.query.id
-    }
   },
   components: {
     Tinymce

@@ -136,7 +136,7 @@ export default {
       this.$router.push({ name: 'UpdatePackageProblem', params: { id }, query: { id: this.$route.params.id, name: this.packageInfo.name }})
     },
     handleCreate() {
-      this.$router.push({ name: 'CreatePackageProblem', query: { name: this.packageInfo.name }})
+      this.$router.push({ name: 'CreatePackageProblem', query: { name: this.packageInfo.name, id: this.packageInfo.packetId }})
     },
     handleDelete(id) {
       this.$confirm('此操作将永久删除该题目, 是否继续?', '提示', {

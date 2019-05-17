@@ -73,10 +73,10 @@
 
     <div class="pagination-container" style="margin-top:10px;">
       <el-pagination
-        v-show="total>0"
-        :current-page="listQuery.page"
+        v-show="total>listQuery.limit"
         :page-sizes="[10,20,30,50]"
         :page-size="listQuery.limit"
+        :current-page="listQuery.page"
         :total="total"
         background
         layout="total, sizes, prev, pager, next, jumper"
@@ -165,6 +165,7 @@ export default {
       this.getList()
     },
     handleCurrentChange(val) {
+      console.log(val)
       this.listQuery.page = val
       this.getList()
     },
