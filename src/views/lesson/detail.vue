@@ -92,21 +92,18 @@
 
     <el-dialog title="课程信息" :visible.sync="dialogSection" width="40%">
       <el-form :model="sectionForm" label-width="100px">
-        <!-- <el-form-item label="课程视频">
+        <el-form-item label="课程视频" style="width:600px">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
+            :action="`${API_ROOT}/subsection/temp`"
             multiple
-            :limit="3"
-            :on-exceed="handleExceed"
+            :limit="1"
+            :on-success="handleSuccess"
             :file-list="fileList">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">只能上传mp4文件，且不超过 1 GB</div>
           </el-upload>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="课程标题" style="width:500px;">
           <el-input v-model="sectionForm.title"></el-input>
         </el-form-item>
@@ -123,11 +120,13 @@
 import * as lesson from '@/api/lesson'
 import * as chapter from '@/api/chapter'
 import * as section from '@/api/section'
+import { API_ROOT } from '@/utils/request'
 
 export default {
   name: 'LessonDetail',
   data() {
     return {
+      API_ROOT,
       list: [],
       loading: true,
       defaultProps: {
@@ -144,12 +143,17 @@ export default {
         title: '',
         url: null
       },
+      fileList: [],
       dialogChapter: false,
       dialogSection: false,
       method: 'create'
     }
   },
   methods: {
+    handleSuccess(res) {
+      const url = res.data.split('/')
+      this.sectionForm.url = url[url.length - 1]
+    },
     handleDeleteSection(id) {
       section.deleteById(id)
         .then((result) => {
@@ -164,6 +168,7 @@ export default {
         title: section.title,
         url: section.url
       }
+      this.fileList = [{ name: section.title, url: section.url }]
       this.dialogSection = true
       this.method = 'update'
     },
@@ -173,6 +178,7 @@ export default {
         title: '',
         url: null
       }
+      this.fileList = []
       this.dialogSection = true
       this.method = 'create'
     },

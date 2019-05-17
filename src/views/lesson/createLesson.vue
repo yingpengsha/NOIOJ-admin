@@ -100,7 +100,8 @@ export default {
     handleCreate() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          lesson.create(this.form)
+          const arr = this.form.image.split('/')
+          lesson.create({ ...this.form, image: arr[arr.length - 1] })
             .then((result) => {
               if (result.code === 1) {
                 this.$message.success('创建课程成功！')

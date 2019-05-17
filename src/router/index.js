@@ -145,6 +145,7 @@ export const constantRouterMap = [
       {
         path: 'detail/:id',
         name: 'LessonDetail',
+        hidden: true,
         component: () => import('@/views/lesson/detail'),
         meta: { title: '课程详情', icon: 'edit' }
       }

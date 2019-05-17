@@ -89,7 +89,8 @@ export default {
     handleUpdate() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          lesson.update(this.form)
+          const arr = this.form.image.split('/')
+          lesson.update({ ...this.form, image: arr[arr.length - 1] })
             .then((result) => {
               if (result.code === 1) {
                 this.$message.success('更新课程成功！')
